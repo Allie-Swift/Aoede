@@ -49,16 +49,17 @@ class Database {
     register = (Cls) => {
         const clsInst = new Cls()
         this.entities.push({
+            new: (...args) => new Cls(...args),
             className: Cls.name,
             properties: Object.keys(clsInst)
                 .filter((key) => key.startsWith("_"))
-                .map((key) => ({name: key.substring(1), ...(clsInst[key])}))
+                .map((key) => ({ name: key.substring(1), ...(clsInst[key]) }))
         })
     }
 
     /**
      * Create tables for registered entities.
-     * @param force : Boolean
+     * @param force Boolean
      * Will drop tables before create if force is set to `true`
      */
     sync = (force = false) => {
@@ -107,6 +108,7 @@ class Database {
 
             return createTableScript
         }).join("")
+        console.log(createTableScript)
         this.db.exec(`PRAGMA foreign_keys = off; ${createTableScript} PRAGMA foreign_keys = on;`)
     }
 
@@ -175,6 +177,47 @@ class Database {
         }
     }
 
+    /**
+     * 
+     * @param query Object
+     * - `query.table`
+     * - `query.where`
+     * 
+     */
+    select = (query, values) => {
+        return this.db.prepare(query).all(values)
+    }
+
+
+    get = (table, condition, conditionParam) => {
+        const entityClass = this.entities.find(ett => ett.className === table)
+        let res = []
+        if (condition) {
+            res = this.db.prepare(`SELECT * FROM ${entityClass.className} ${condition}`).all(conditionParam)
+        } else {
+            res = this.db.prepare(`SELECT * FROM ${entityClass.className}`).all()
+        }
+        for (let i = 0; i < res.length; i++) {
+            let row = res[i];
+            let inst = entityClass.new();
+
+            for (let j = 0; j < entityClass.properties.length; j++) {
+                let prop = entityClass.properties[j];
+
+                if (prop.type === DataType.LIST) {
+                    const target = prop.target
+                    inst[prop.name] = this.get(prop.target, `JOIN ${entityClass.className}_${target} ON ${entityClass.className}_${target}.${target}_${prop.via} = ${target}.${prop.via} WHERE ${entityClass.className}_${target}.${entityClass.className}_${prop.pk} = ?`, row[prop.pk])
+                } else if (prop.type === DataType.OBJECT) {
+                    const target = prop.target
+                    inst[prop.name] = this.get(prop.target, `WHERE ${target}.${prop.via} = ?`, row[prop.name]).at(0)
+                } else {
+                    inst[prop.name] = row[prop.name];
+                }
+            }
+            res[i] = inst;
+        }
+        return res
+    }
 }
 
 
@@ -185,10 +228,10 @@ class Song {
     album
     artists
 
-    _file_path = {type: DataType.TEXT, primaryKey: true}
-    _name = {type: DataType.TEXT}
-    _album = {type: DataType.OBJECT, target: "Album", via: "name"}
-    _artists = {type: DataType.LIST, target: "Artist", via: "name", pk: "file_path"}
+    _file_path = { type: DataType.TEXT, primaryKey: true }
+    _name = { type: DataType.TEXT }
+    _album = { type: DataType.OBJECT, target: "Album", via: "name" }
+    _artists = { type: DataType.LIST, target: "Artist", via: "name", pk: "file_path" }
 
     constructor(file_path, name, album, artists) {
         this.file_path = file_path
@@ -206,10 +249,10 @@ class Album {
     image_file_path
     artists
 
-    _name = {type: DataType.TEXT, primaryKey: true}
-    _release_year = {type: DataType.NUMBER}
-    _image_file_path = {type: DataType.TEXT}
-    _artists = {type: DataType.LIST, target: "Artist", via: "name", pk: "name"}
+    _name = { type: DataType.TEXT, primaryKey: true }
+    _release_year = { type: DataType.NUMBER }
+    _image_file_path = { type: DataType.TEXT }
+    _artists = { type: DataType.LIST, target: "Artist", via: "name", pk: "name" }
 
     constructor(name, release_year, image_file_path, artists) {
         this.name = name
@@ -224,8 +267,8 @@ class Artist {
     name
     image_file_path
 
-    _name = {type: DataType.TEXT, primaryKey: true}
-    _image_file_path = {type: DataType.TEXT}
+    _name = { type: DataType.TEXT, primaryKey: true }
+    _image_file_path = { type: DataType.TEXT }
 
     constructor(name, image_file_path) {
         this.name = name
@@ -238,7 +281,8 @@ const conn = new Database()
 conn.register(Song)
 conn.register(Artist)
 conn.register(Album)
-conn.sync(true)
+// conn.sync(true)
+// conn.upsert(generateRandomSongs())
+console.log(conn.get("Album"))
 
-
-module.exports = Database
+// module.exports = Database
