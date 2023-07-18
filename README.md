@@ -1,3 +1,12 @@
+# Steps
+
+delete `yarn.lock`
+~~~
+yarn install
+./node_modules/.bin/electron-rebuild
+~~~
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

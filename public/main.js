@@ -1,8 +1,21 @@
 const {app, BrowserWindow} = require('electron')
 const isDev = require('electron-is-dev')
+const path = require("path");
+const express = require("express");
+const cors = require("cors");
+const bodyParser = require("body-parser")
 require('@electron/remote/main').initialize()
 
 function createWindow() {
+
+    const server = express()
+    server.use(cors())
+    server.use(bodyParser.json())
+    server.use("/", require("./src/Controller/BaseController"))
+    const host = server.listen(0, ()=>{
+        console.log(`http://localhost:${host.address().port}/`)
+    })
+
     const win = new BrowserWindow({
         width: 800,
         height: 600,
