@@ -1,3 +1,5 @@
+const {DataType} = require("../Database");
+
 class Album {
 
     name

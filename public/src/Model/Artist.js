@@ -1,3 +1,5 @@
+const {DataType} = require("../Database");
+
 class Artist {
 
     name
