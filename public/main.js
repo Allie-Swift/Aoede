@@ -5,8 +5,7 @@ const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser")
 const ip = require("ip");
-const {upsertConfig} = require("./src/Service/DataProvider");
-const {fsUpsertConfig} = require("./src/Service/FileManager");
+const {upsertConfig} = require("./src/Service/FileManager");
 require('@electron/remote/main').initialize()
 
 function createWindow() {
@@ -15,9 +14,8 @@ function createWindow() {
     server.use(cors())
     server.use(bodyParser.json())
     server.use("/", require("./src/Controller/BaseController"))
-    const host = server.listen(0, ()=>{
-        upsertConfig("ServerAddress",`http://${ip.address()}:${host.address().port}/`)
-        fsUpsertConfig("ServerAddress",`http://${ip.address()}:${host.address().port}/`)
+    const host = server.listen(1010, () => {
+        upsertConfig("ServerAddress", `http://${ip.address()}:${host.address().port}/`)
     })
 
     const win = new BrowserWindow({

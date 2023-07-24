@@ -5,7 +5,6 @@ const Song = require("../Model/Song");
 const fs = require("fs");
 const path = require("path");
 const NodeID3 = require('node-id3')
-const Configuration = require("../Model/Configuration");
 
 const db = new Database()
 
@@ -13,24 +12,10 @@ const initialize = () => {
     db.register(Artist)
     db.register(Album)
     db.register(Song)
-    db.register(Configuration)
     db.sync()
 }
 
 initialize()
-
-
-const upsertConfig = (key, value) => {
-    db.upsert(new Configuration(key, value))
-}
-
-const getConfig = (key) => {
-    const configurations = db.get("Configuration", "WHERE key = ?", key)
-    if (configurations.length > 0)
-        return configurations[0].value
-    return
-}
-
 
 const loadMusicLibrary = async (folderPath) => {
     const songList = []
@@ -98,8 +83,6 @@ const readMP3Metadata = (filePath, onReadMetadata) => {
 
 module.exports = {
     initialize,
-    getConfig,
-    upsertConfig,
     loadMusicLibrary
 }
 

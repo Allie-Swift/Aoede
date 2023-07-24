@@ -1,5 +1,6 @@
 const express = require("express")
-const {initialize, getConfig,loadMusicLibrary} = require("../Service/DataProvider");
+const {loadMusicLibrary} = require("../Service/DataProvider");
+const {getConfig} = require("../Service/FileManager");
 const server = express.Router()
 
 server.all("/init", (req, res) => {
