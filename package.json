@@ -9,10 +9,13 @@
     "author": "lhinxue <lhinxue@gmail.com>",
     "license": "MIT",
     "dependencies": {
+        "@ant-design/icons": "^5.1.4",
         "@electron/remote": "^2.0.10",
+        "@radix-ui/react-scroll-area": "^1.0.4",
         "@testing-library/jest-dom": "^5.14.1",
         "@testing-library/react": "^13.0.0",
         "@testing-library/user-event": "^13.2.1",
+        "antd": "^5.7.2",
         "better-sqlite3": "^8.4.0",
         "body-parser": "^1.20.2",
         "cors": "^2.8.5",
