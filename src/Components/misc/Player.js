@@ -13,7 +13,7 @@ export default function () {
             <div style={{position: "absolute", width: "100%", top: '-5px'}}>
                 <Slider style={{margin: '0'}} tooltip={{formatter: null}}/>
             </div>
-            <Space size={0} style={{width:"200px", paddingLeft:"10px", justifyContent:"flex-start"}}>
+            <Space size={0} style={{width: "200px", paddingLeft: "10px", justifyContent: "flex-start"}}>
                 <Button size={"small"} shape={"circle"} type={'link'} icon={<Remix.Disc/>}/>
                 <Button size={"small"} shape={"circle"} type={'link'} icon={<Remix.Album/>}/>
                 <Button size={"small"} shape={"circle"} type={'link'} icon={<Remix.User/>}/>
@@ -25,13 +25,13 @@ export default function () {
                 <Button size={"middle"} shape={"circle"} icon={<Remix.SkipForward/>}/>
                 <Button size={"small"} shape={"circle"} icon={<Remix.RepeatOne/>} type={"text"}/>
             </Space>
-            <Space size={0}  style={{width:"200px", paddingRight:"10px", justifyContent:"flex-end"}}>
-                <Breadcrumb style={{marginRight:"20px"}}>
+            <Space size={0} style={{width: "200px", paddingRight: "10px", justifyContent: "flex-end"}}>
+                <Breadcrumb style={{marginRight: "20px"}}>
                     <Breadcrumb.Item>0:00</Breadcrumb.Item>
                     <Breadcrumb.Item>0:00</Breadcrumb.Item>
                 </Breadcrumb>
-                <Button size={"small"} shape={"circle"} type={'link'}icon={<Remix.SpeedUp/>}/>
-                <Button size={"small"} shape={"circle"} type={'link'}icon={<Remix.VolumnUp/>}/>
+                <Button size={"small"} shape={"circle"} type={'text'} icon={<Remix.SpeedUp/>}/>
+                <Button size={"small"} shape={"circle"} type={'text'} icon={<Remix.VolumnUp/>}/>
             </Space>
 
         </div>

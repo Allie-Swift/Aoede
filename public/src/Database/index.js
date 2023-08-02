@@ -160,7 +160,7 @@ class Database {
         }
         for (let i = 0; i < res.length; i++) {
             let row = res[i];
-            let inst = entityClass.new();
+            let inst = {};
 
             for (let j = 0; j < entityClass.properties.length; j++) {
                 let prop = entityClass.properties[j];

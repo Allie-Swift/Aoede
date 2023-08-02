@@ -80,9 +80,19 @@ const readMP3Metadata = (filePath, onReadMetadata) => {
     })
 }
 
+const getArtist = ()=>{
+    return db.get("Artist")
+}
+
+const getAlbum = ()=>{
+    return db.get("Album")
+}
 
 module.exports = {
     initialize,
-    loadMusicLibrary
+    loadMusicLibrary,
+    getArtist,
+    getAlbum
+
 }
 
