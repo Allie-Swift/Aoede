@@ -154,9 +154,9 @@ class Database {
         const entityClass = this.entities.find(ett => ett.className === table)
         let res = []
         if (condition) {
-            res = this.db.prepare(`SELECT * FROM ${entityClass.className} ${condition}`).all(conditionParam)
+            res = this.db.prepare(`SELECT ${entityClass.className}.* FROM ${entityClass.className} ${condition}`).all(conditionParam)
         } else {
-            res = this.db.prepare(`SELECT * FROM ${entityClass.className}`).all()
+            res = this.db.prepare(`SELECT ${entityClass.className}.* FROM ${entityClass.className}`).all()
         }
         for (let i = 0; i < res.length; i++) {
             let row = res[i];

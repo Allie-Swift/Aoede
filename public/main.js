@@ -15,7 +15,7 @@ function createWindow() {
     server.use(bodyParser.json())
     server.use("/", require("./src/Controller/BaseController"))
     server.use("/api",require("./src/Controller/DataController"))
-    const host = server.listen(0, () => {
+    const host = server.listen(1010, () => {
         upsertConfig("ServerAddress", `http://${ip.address()}:${host.address().port}/`)
     })
 

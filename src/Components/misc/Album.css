@@ -1,0 +1,12 @@
+
+.Album{
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 8px;
+    gap:8px;
+}
+.AlbumCover {
+    width: 150px; /* Set the width and height according to your image size */
+    height: 150px;
+    border-radius: 1em;
+    overflow: hidden;
+}
+

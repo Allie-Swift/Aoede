@@ -80,19 +80,29 @@ const readMP3Metadata = (filePath, onReadMetadata) => {
     })
 }
 
-const getArtist = ()=>{
+const getArtist = () => {
     return db.get("Artist")
 }
 
-const getAlbum = ()=>{
+const getAlbum = () => {
     return db.get("Album")
+}
+
+const getAlbumCover = (albumName) => {
+    const albumSongs = db.get("Song", "INNER JOIN ALBUM ON SONG.ALBUM = ALBUM.NAME WHERE ALBUM.NAME = ?", albumName)
+    for (const albumSong of albumSongs) {
+        const tags = NodeID3.read(albumSong.file_path)
+        if (tags.image) return tags.image
+    }
+    return
 }
 
 module.exports = {
     initialize,
     loadMusicLibrary,
     getArtist,
-    getAlbum
+    getAlbum,
+    getAlbumCover
 
 }
 
